@@ -12,15 +12,37 @@ public class PlayerMovement : MonoBehaviour
         rigidBody.AddForce(0, 0, forwardForce * Time.deltaTime);
         if (Input.GetKey("d") || Input.GetKey(KeyCode.RightArrow))
         {
-            rigidBody.AddForce(sidewayForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
+            GoRight();
         }
         if (Input.GetKey("a") || Input.GetKey(KeyCode.LeftArrow))
         {
-            rigidBody.AddForce(-sidewayForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
+            GoLeft();
         }
-        if(rigidBody.position.y < -1f)
+        if (rigidBody.position.y < -1f)
         {
             FindObjectOfType<GameManager>().EndGame();
         }
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.position.x > (Screen.width / 2))
+            {
+                GoRight();
+            }
+            if (touch.position.x < (Screen.width / 2))
+            {
+                GoLeft();
+            }
+        }
+    }
+
+    void GoRight()
+    {
+        rigidBody.AddForce(sidewayForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
+    }
+
+    void GoLeft()
+    {
+        rigidBody.AddForce(-sidewayForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
     }
 }
